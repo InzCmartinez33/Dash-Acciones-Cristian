@@ -59,11 +59,41 @@ if st.button("🚀 Escanear Mercado Ahora"):
                     estado_vol = "🟢 Alcista (Sube con fuerza)" if volumen_reciente > volumen_previo else "🔴 Falsa subida (Poco vol)"
 
             # --- DECISIÓN ---
+           # --- DECISIÓN (SISTEMA DE CONFLUENCIA DE 3 SEÑALES) ---
+            # Calculamos la Media Móvil de 20 días para nuestra 3ra señal
+            sma_20 = historial['Close'].rolling(window=20).mean().iloc[-1]
+            
+            puntos_compra = 0
+            puntos_venta = 0
+            
+            # SEÑAL 1: RSI (Relajamos a 40/60 para detectar el inicio del movimiento)
+            if rsi_actual <= 40: 
+                puntos_compra += 1
+            elif rsi_actual >= 60: 
+                puntos_venta += 1
+                
+            # SEÑAL 2: Análisis de Volumen
+            if "🟢" in estado_vol: 
+                puntos_compra += 1
+            elif "🔴" in estado_vol: 
+                puntos_venta += 1
+                
+            # SEÑAL 3: Tendencia del Precio (Precio actual vs Media de 20 días)
+            if precio_actual > sma_20: 
+                puntos_compra += 1
+            elif precio_actual < sma_20: 
+                puntos_venta += 1
+                
+            # VEREDICTO FINAL DE LA APP
             decision = "⚪ Mantener"
-            if rsi_actual <= 30:
-                decision = "🟢 FUERTE COMPRA" if "Compra" in estado_vol else "🟢 COMPRAR"
-            elif rsi_actual >= 70:
-                decision = "🔴 FUERTE VENTA" if "Falsa subida" in estado_vol or "Peligro" in estado_vol else "🔴 VENDER"
+            if puntos_compra == 3:
+                decision = "🔥 ¡TRIPLE COMPRA!"
+            elif puntos_venta == 3:
+                decision = "🚨 ¡TRIPLE VENTA!"
+            elif puntos_compra == 2:
+                decision = "🟢 Comprar (2/3)"
+            elif puntos_venta == 2:
+                decision = "🔴 Vender (2/3)"
 
             # --- FIBONACCI ---
             maximo_3m = historial['High'].max()
