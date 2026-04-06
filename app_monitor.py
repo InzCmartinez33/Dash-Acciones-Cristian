@@ -2,6 +2,7 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import plotly.graph_objects as go  # <-- NUEVA LIBRERÍA PARA EL GRÁFICO
+import time
 
 # --- CONFIGURACIÓN DE LA PÁGINA ---
 st.set_page_config(page_title="Monitor de Mercado", page_icon="📈", layout="wide")
@@ -101,6 +102,7 @@ if st.button("🚀 Escanear Mercado Ahora"):
             st.error(f"Error con {ticker}: {e}")
             
         barra_progreso.progress((i + 1) / len(tickers))
+        time.sleep(2)
 
     estado_texto.empty()
     barra_progreso.empty()
