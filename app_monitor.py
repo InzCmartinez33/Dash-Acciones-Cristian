@@ -8,7 +8,7 @@ import time
 st.set_page_config(page_title="Monitor de Mercado", page_icon="📈", layout="wide")
 
 # 1. Definir la lista de acciones
-tickers = ["AAPL", "MSFT", "GOOGL", "TSLA", "AMZN", "NVDA", "META"]
+tickers = ["GM", "T", "PFE", "BAC", "KO", "PG", "O","PEP","SO","NU","SOFI","PLTR","HOOD","KVUE"]
 
 # 2. Función para calcular el RSI
 def calcular_rsi(datos_precio, periodos=14):
@@ -24,7 +24,7 @@ def calcular_rsi(datos_precio, periodos=14):
     return rsi.iloc[-1]
 
 # 3. Interfaz Visual: Título
-st.title("📈 Monitor Algorítmico de Acciones")
+st.title("📈 Monitor de Acciones")
 st.markdown("Analizador en tiempo real basado en **Fuerza Relativa (RSI)**, **Volumen** y **Fibonacci**.")
 
 # 4. Botón interactivo para ejecutar el escaneo
